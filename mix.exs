@@ -12,6 +12,9 @@ defmodule Exqlite.MixProject do
       compilers: [:elixir_make] ++ Mix.compilers(),
       make_targets: ["all"],
       make_clean: ["clean"],
+      make_precompiler: make_precompiler(),
+      make_precompiler_url: "https://github.com/cocoa-xu/exqlite/releases/download/v#{@version}/@{artefact_filename}",
+      make_precompiler_filename: "sqlite3_nif",
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -43,7 +46,8 @@ defmodule Exqlite.MixProject do
     [
       {:db_connection, "~> 2.1"},
       {:ex_sqlean, "~> 0.8.5", only: [:dev, :test]},
-      {:elixir_make, "~> 0.6", runtime: false},
+      {:elixir_make, "~> 0.7", runtime: false},
+      {:cc_precompiler, "~> 0.1", runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:temp, "~> 0.4", only: [:dev, :test]},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
@@ -60,6 +64,14 @@ defmodule Exqlite.MixProject do
 
   defp description do
     "An Elixir SQLite3 library"
+  end
+
+  defp make_precompiler do
+    if System.get_env("EXQLITE_USE_SYSTEM") != nil do
+      nil
+    else
+      {:nif, CCPrecompiler}
+    end
   end
 
   defp package do
