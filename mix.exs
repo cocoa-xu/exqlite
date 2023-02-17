@@ -13,7 +13,8 @@ defmodule Exqlite.MixProject do
       make_targets: ["all"],
       make_clean: ["clean"],
       make_precompiler: make_precompiler(),
-      make_precompiler_url: "https://github.com/cocoa-xu/exqlite/releases/download/v#{@version}/@{artefact_filename}",
+      make_precompiler_url:
+        "https://github.com/cocoa-xu/exqlite/releases/download/v#{@version}/@{artefact_filename}",
       make_precompiler_filename: "sqlite3_nif",
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
