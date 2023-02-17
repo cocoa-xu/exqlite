@@ -85,6 +85,7 @@ defmodule Exqlite.MixProject do
         .clang-format
         c_src
         Makefile*
+        checksum.exs
       ),
       name: "exqlite",
       licenses: ["MIT"],
