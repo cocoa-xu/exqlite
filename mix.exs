@@ -16,9 +16,11 @@ defmodule Exqlite.MixProject do
       make_precompiler_url:
         "https://github.com/cocoa-xu/exqlite/releases/download/v#{@version}/@{artefact_filename}",
       make_precompiler_filename: "sqlite3_nif",
-      cc_precompiler: [
-        cleanup: "clean"
+      make_precompiler_nif_versions: [
+        versions: ["2.15", "2.16"],
+        availability: &target_available_for_nif_version?/2
       ],
+      cc_precompiler: [cleanup: "clean"],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -75,6 +77,14 @@ defmodule Exqlite.MixProject do
       nil
     else
       {:nif, CCPrecompiler}
+    end
+  end
+
+  def target_available_for_nif_version?(target, nif_version) do
+    if String.contains?(target, "windows") do
+      nif_version == "2.16"
+    else
+      true
     end
   end
 
