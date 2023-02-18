@@ -12,7 +12,6 @@ defmodule Exqlite.MixProject do
       compilers: [:elixir_make] ++ Mix.compilers(),
       make_targets: ["all"],
       make_clean: ["clean"],
-
       make_precompiler: make_precompiler(),
       make_precompiler_url:
         "https://github.com/cocoa-xu/exqlite/releases/download/v#{@version}/@{artefact_filename}",
@@ -20,7 +19,6 @@ defmodule Exqlite.MixProject do
       cc_precompiler: [
         cleanup: "clean"
       ],
-
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
