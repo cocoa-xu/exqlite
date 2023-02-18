@@ -24,8 +24,6 @@ jobs:
         exclude:
           - os: "windows-2019"
             otp: "23"
-          - os: "macos-11"
-            otp: "23"
     steps:
       - uses: actions/checkout@v3
       - uses: erlef/setup-beam@v1
@@ -36,10 +34,14 @@ jobs:
       - name: Install erlang and elixir
         if: matrix.os == 'macos-11'
         run: |
-          brew install erlang elixir
+          if [ "${{ matrix.otp }}" = "23" ]; then
+            brew install "erlang@${{ matrix.otp }}" elixir
+          else
+            brew install erlang elixir
+          fi
           mix local.hex --force
           mix local.rebar --force
-      
+
       - uses: ilammy/msvc-dev-cmd@v1
         if: matrix.os == 'windows-2019'
         with:
