@@ -35,7 +35,16 @@ jobs:
         if: matrix.os == 'macos-11'
         run: |
           if [ "${{ matrix.otp }}" = "23" ]; then
-            brew install "erlang@${{ matrix.otp }}" elixir
+            brew install "erlang@${{ matrix.otp }}"
+            brew link --overwrite "erlang@${{ matrix.otp }}"
+
+            export ELIXIR_VER=1.14.3
+            mkdir -p "${HOME}/.elixir/v${ELIXIR_VER}"
+            cd "${HOME}/.elixir/v${ELIXIR_VER}"
+            wget "https://github.com/elixir-lang/elixir/releases/download/v${ELIXIR_VER}/elixir-otp-${{ matrix.otp }}.zip" -O "elixir-${ELIXIR_VER}.zip"
+            unzip "elixir-${ELIXIR_VER}.zip"
+            rm -f "elixir-${ELIXIR_VER}.zip"
+            export PATH="${HOME}/.elixir/v${ELIXIR_VER}/bin:${PATH}"
           else
             brew install erlang elixir
           fi
@@ -63,6 +72,10 @@ jobs:
       - name: Create precompiled library
         shell: bash
         run: |
+          if [ "${{ matrix.os }}" = "macos-11" ]; then
+            export ELIXIR_VER=1.14.3
+            export PATH="${HOME}/.elixir/v${ELIXIR_VER}/bin:${PATH}"
+          fi
           export ELIXIR_MAKE_CACHE_DIR=$(pwd)/cache
           mkdir -p "${ELIXIR_MAKE_CACHE_DIR}"
           mix deps.get
