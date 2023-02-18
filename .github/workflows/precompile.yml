@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   precompile:
     runs-on: ${{ matrix.os }}
@@ -36,6 +39,11 @@ jobs:
           brew install erlang elixir
           mix local.hex --force
           mix local.rebar --force
+      
+      - uses: ilammy/msvc-dev-cmd@v1
+        if: matrix.os == 'windows-2019'
+        with:
+          arch: x64
 
       - name: Install system dependencies
         if: matrix.os == 'ubuntu-20.04'
