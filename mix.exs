@@ -55,7 +55,7 @@ defmodule Exqlite.MixProject do
       {:elixir_make, "~> 0.7",
        runtime: false,
        github: "cocoa-xu/elixir_make",
-       branch: "cx-nif-versions",
+       branch: "cx-fix-current_target_url",
        override: true},
       {:cc_precompiler, "~> 0.1", runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
