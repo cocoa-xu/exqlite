@@ -21,7 +21,7 @@ jobs:
         elixir: ["1.14"]
         job:
           - { os: "ubuntu-20.04", otp: "23" }
-          - { os: "macos-11", otp: "23" }
+          - { os: "macos-11", otp: "24" }
           - { os: "windows-2019", otp: "25" }
     steps:
       - uses: actions/checkout@v3
