@@ -40,17 +40,17 @@ jobs:
       - name: Install armv7l specific deps
         run: sudo apt-get install -y gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 
-      - name: Create precompiled ${{ env.ARCH }} library
+      - name: Create precompiled armv7l library
         run: |
           ROOTDIR="$(pwd)"
           OTP_ROOTDIR="${ROOTDIR}/.tools/otp"
           mkdir -p "${OTP_ROOTDIR}"
           cd "${OTP_ROOTDIR}"
-          curl -fSL "https://github.com/cocoa-xu/otp-build/releases/download/v${OTP_VERSION}/otp-${{ env.TARGET }}.tar.gz" -o "otp-${{ env.TARGET }}.tar.gz"
+          curl -fSL "https://github.com/cocoa-xu/otp-build/releases/download/v${{ matrix.job.otp }}/otp-${{ env.TARGET }}.tar.gz" -o "otp-${{ env.TARGET }}.tar.gz"
           tar -xzf "otp-${{ env.TARGET }}.tar.gz"
           cd "${ROOTDIR}"
 
-          export ERL_CFLAGS="-I${OTP_ROOTDIR}/usr/local/lib/erlang/usr/include"
+          export PRECOMPILE_ERL_CFLAGS="-I${OTP_ROOTDIR}/usr/local/lib/erlang/usr/include"
           export ELIXIR_MAKE_CACHE_DIR=$(pwd)/cache
           mkdir -p "${ELIXIR_MAKE_CACHE_DIR}"
           mix deps.get
