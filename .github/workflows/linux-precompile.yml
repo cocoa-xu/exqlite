@@ -50,7 +50,7 @@ jobs:
           tar -xzf "otp-${{ env.TARGET }}.tar.gz"
           cd "${ROOTDIR}"
 
-          export PRECOMPILE_ERL_CFLAGS="-I${OTP_ROOTDIR}/usr/local/lib/erlang/usr/include"
+          export PRECOMPILE_ERL_EI_INCLUDE_DIR="${OTP_ROOTDIR}/usr/local/lib/erlang/usr/include"
           export ELIXIR_MAKE_CACHE_DIR=$(pwd)/cache
           mkdir -p "${ELIXIR_MAKE_CACHE_DIR}"
           mix deps.get

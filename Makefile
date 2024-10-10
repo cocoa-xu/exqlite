@@ -116,7 +116,7 @@ endif
 
 # Set Erlang-specific compile flags
 ifeq ($(CC_PRECOMPILER_CURRENT_TARGET),armv7l-linux-gnueabihf)
-	ERL_CFLAGS ?= -I"$(PRECOMPILE_ERL_CFLAGS)"
+	ERL_CFLAGS ?= -I"$(PRECOMPILE_ERL_EI_INCLUDE_DIR)"
 else
 	ERL_CFLAGS ?= -I"$(ERL_EI_INCLUDE_DIR)"
 endif
