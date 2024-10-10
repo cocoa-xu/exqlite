@@ -9,6 +9,45 @@ permissions:
   contents: write
 
 jobs:
+  armv7l-linux-gnueabihf:
+    runs-on: ubuntu-latest
+    env:
+      TARGET: armv7l-linux-gnueabihf
+      DOCKER_PLATFORM: linux/arm/v7
+      DOCKER_IMAGE: ubuntu:20.04
+    strategy:
+      matrix:
+        job:
+          - {otp: "27.1.1", elixir: "1.17.3"}
+          - {otp: "25.3.2.14", elixir: "1.16.0"}
+
+    name: Linux armv7l - OTP ${{ matrix.job.otp }} - Elixir ${{ matrix.job.elixir }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install binfmt
+        run: |
+          sudo apt update
+          sudo apt install -y binfmt-support qemu-user-static
+
+      - name: Pull docker image
+        run: |
+          sudo docker pull --platform=${{ env.DOCKER_PLATFORM }} ${{ env.DOCKER_IMAGE }}
+
+      - name: Run docker container
+        run: |
+          cp .github/build.sh ./
+          cp .github/do-build.sh ./
+
+          bash ./build.sh ${{ env.DOCKER_PLATFORM }} ${{ env.DOCKER_IMAGE }} "${{ matrix.job.otp }}" "${{ matrix.job.elixir }}" "${{ env.TARGET }}"
+
+      - uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            cache/*.tar.gz
+
   precompile:
     runs-on: ubuntu-20.04
     env:
@@ -44,7 +83,6 @@ jobs:
         if: matrix.arch == 'x86_64'
         run: |
           sudo apt-get install -y gcc-i686-linux-gnu g++-i686-linux-gnu \
-            gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf \
             gcc-powerpc64le-linux-gnu g++-powerpc64le-linux-gnu \
             gcc-s390x-linux-gnu g++-s390x-linux-gnu
 
