@@ -148,13 +148,7 @@ defmodule Exqlite.MixProject do
           "riscv64-linux-musl" => "riscv64-linux-musl-",
           "x86_64-linux-gnu" => "x86_64-linux-gnu-",
           "aarch64-linux-gnu" => "aarch64-linux-gnu-",
-          "riscv64-linux-gnu" => "riscv64-linux-gnu-",
-          "armv7l-linux-gnueabihf" => {
-            "arm-linux-gnueabihf-gcc",
-            "arm-linux-gnueabihf-g++",
-            "<%= cc %> -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard",
-            "<%= cxx %> -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard"
-          }
+          "riscv64-linux-gnu" => "riscv64-linux-gnu-"
         },
         {:unix, :darwin} => %{
           :include_default_ones => true
